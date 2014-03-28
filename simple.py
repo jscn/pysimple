@@ -54,3 +54,18 @@ class Multiply(object):
             return Multiply(self.left, self.right.reduce())
 
         return Number(self.left.value * self.right.value)
+
+
+class Machine(object):
+
+    def __init__(self, expression):
+        self._expression = expression
+
+    def step(self):
+        self._expression = self._expression.reduce()
+
+    def run(self):
+        while self._expression.is_reducible:
+            print self._expression
+            self.step()
+        print self._expression
