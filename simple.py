@@ -10,6 +10,9 @@ class Number(object):
     def __str__(self):
         return '{0}'.format(self.value)
 
+    @property
+    def is_reducible(self):
+        return False
 
 class Add(object):
 
@@ -19,6 +22,18 @@ class Add(object):
     def __str__(self):
         return '{0} + {1}'.format(self.left, self.right)
 
+    @property
+    def is_reducible(self):
+        return True
+
+    def reduce(self):
+        if self.left.is_reducible:
+            return Add(self.left.reduce(), self.right)
+        elif self.right.is_reducible:
+            return Add(self.left, self.right.reduce())
+
+        return Number(self.left.value + self.right.value)
+
 
 class Multiply(object):
 
@@ -27,3 +42,15 @@ class Multiply(object):
 
     def __str__(self):
         return '{0} * {1}'.format(self.left, self.right)
+
+    @property
+    def is_reducible(self):
+        return True
+
+    def reduce(self):
+        if self.left.is_reducible:
+            return Multiply(self.left.reduce(), self.right)
+        elif self.right.is_reducible:
+            return Multiply(self.left, self.right.reduce())
+
+        return Number(self.left.value * self.right.value)
