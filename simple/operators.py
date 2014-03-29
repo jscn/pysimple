@@ -34,6 +34,26 @@ class Add(BinaryOperator):
         return Number(self.left.value + self.right.value)
 
 
+class Divide(BinaryOperator):
+
+    def __init__(self, *args, **kwargs):
+        super(Divide, self).__init__(*args, **kwargs)
+        self.sign = '/'
+
+    def _reduce(self):
+        return Number(self.left.value / self.right.value)
+
+
+class GreaterThan(BinaryOperator):
+
+    def __init__(self, *args, **kwargs):
+        super(GreaterThan, self).__init__(*args, **kwargs)
+        self.sign = '>'
+
+    def _reduce(self):
+        return Boolean(self.left.value > self.right.value)
+
+
 class LessThan(BinaryOperator):
 
     def __init__(self, *args, **kwargs):
@@ -52,3 +72,13 @@ class Multiply(BinaryOperator):
 
     def _reduce(self):
         return Number(self.left.value * self.right.value)
+
+
+class Subtract(BinaryOperator):
+
+    def __init__(self, *args, **kwargs):
+        super(Subtract, self).__init__(*args, **kwargs)
+        self.sign = '-'
+
+    def _reduce(self):
+        return Number(self.left.value - self.right.value)
