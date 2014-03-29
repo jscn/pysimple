@@ -14,6 +14,40 @@ class Number(object):
     def is_reducible(self):
         return False
 
+
+class Boolean(object):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return '{0}'.format(self.value)
+
+    @property
+    def is_reducible(self):
+        return False
+
+
+class LessThan(object):
+
+    def __init__(self, left, right):
+        self.left, self.right = left, right
+
+    def __str__(self):
+        return '{0} < {1}'.format(self.left, self.right)
+
+    @property
+    def is_reducible(self):
+        return True
+
+    def reduce(self):
+        if self.left.is_reducible:
+            return LessThan(self.left.reduce(), self.right)
+        elif self.right.is_reducible:
+            return LessThan(self.left, self.right.reduce())
+        return Boolean(self.left.value < self.right.value)
+
+
 class Add(object):
 
     def __init__(self, left, right):
