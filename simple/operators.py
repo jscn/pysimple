@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from .primitives import Boolean, Number
 
 
-class LessThan(object):
+class BinaryOperator(object):
 
     def __init__(self, left, right):
         self.left, self.right = left, right
 
     def __str__(self):
-        return '{0} < {1}'.format(self.left, self.right)
+        return '{left} {sign} {right}'.format(left=self.left, sign=self.sign,
+                                              right=self.right)
 
     @property
     def is_reducible(self):
@@ -16,50 +18,37 @@ class LessThan(object):
 
     def reduce(self):
         if self.left.is_reducible:
-            return LessThan(self.left.reduce(), self.right)
+            return self.__class__(self.left.reduce(), self.right)
         elif self.right.is_reducible:
-            return LessThan(self.left, self.right.reduce())
-        return Boolean(self.left.value < self.right.value)
+            return self.__class__(self.left, self.right.reduce())
+        return self._reduce()
 
 
-class Add(object):
+class Add(BinaryOperator):
 
-    def __init__(self, left, right):
-        self.left, self.right = left, right
+    def __init__(self, *args, **kwargs):
+        super(Add, self).__init__(*args, **kwargs)
+        self.sign = '+'
 
-    def __str__(self):
-        return '{0} + {1}'.format(self.left, self.right)
-
-    @property
-    def is_reducible(self):
-        return True
-
-    def reduce(self):
-        if self.left.is_reducible:
-            return Add(self.left.reduce(), self.right)
-        elif self.right.is_reducible:
-            return Add(self.left, self.right.reduce())
-
+    def _reduce(self):
         return Number(self.left.value + self.right.value)
 
 
-class Multiply(object):
+class LessThan(BinaryOperator):
 
-    def __init__(self, left, right):
-        self.left, self.right = left, right
+    def __init__(self, *args, **kwargs):
+        super(LessThan, self).__init__(*args, **kwargs)
+        self.sign = '<'
 
-    def __str__(self):
-        return '{0} * {1}'.format(self.left, self.right)
+    def _reduce(self):
+        return Boolean(self.left.value < self.right.value)
 
-    @property
-    def is_reducible(self):
-        return True
 
-    def reduce(self):
-        if self.left.is_reducible:
-            return Multiply(self.left.reduce(), self.right)
-        elif self.right.is_reducible:
-            return Multiply(self.left, self.right.reduce())
+class Multiply(BinaryOperator):
 
+    def __init__(self, *args, **kwargs):
+        super(Multiply, self).__init__(*args, **kwargs)
+        self.sign = '*'
+
+    def _reduce(self):
         return Number(self.left.value * self.right.value)
-
