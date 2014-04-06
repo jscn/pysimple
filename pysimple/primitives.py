@@ -10,6 +10,9 @@ class Number(object):
     def __str__(self):
         return '{0}'.format(self.value)
 
+    def __repr__(self):
+        return self.__str__()
+
     @property
     def is_reducible(self):
         return False
@@ -22,6 +25,9 @@ class Boolean(object):
 
     def __str__(self):
         return '{0}'.format(self.value)
+
+    def __repr__(self):
+        return self.__str__()
 
     @property
     def is_reducible(self):

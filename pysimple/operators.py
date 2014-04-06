@@ -12,6 +12,9 @@ class BinaryOperator(object):
         return '{left} {sign} {right}'.format(left=self.left, sign=self.sign,
                                               right=self.right)
 
+    def __repr__(self):
+        return self.__str__()
+
     @property
     def is_reducible(self):
         return True
@@ -101,6 +104,9 @@ class Not(object):
 
     def __str__(self):
         return 'not {0}'.format(self.value)
+
+    def __repr__(self):
+        return self.__str__()
 
     @property
     def is_reducible(self):

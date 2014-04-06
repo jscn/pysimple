@@ -26,6 +26,9 @@ class Variable(object):
     def __str__(self):
         return '{0}'.format(self.name)
 
+    def __repr__(self):
+        return self.__str__()
+
     @property
     def is_reducible(self):
         return True
