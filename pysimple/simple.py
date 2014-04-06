@@ -4,18 +4,18 @@ from __future__ import unicode_literals
 
 class Machine(object):
 
-    def __init__(self, expression, environment):
-        self._expression = expression
-        self._environment = environment
+    def __init__(self, statement, environment):
+        self._statement, self._environment = statement, environment
 
     def step(self):
-        self._expression = self._expression.reduce(self._environment)
+        self._statement, self._environment  = self._statement.reduce(
+            self._environment)
 
     def run(self):
-        while self._expression.is_reducible:
-            print self._expression
+        while self._statement.is_reducible:
+            print self._statement, self._environment
             self.step()
-        print self._expression
+        print self._statement, self._environment
 
 
 class Variable(object):
