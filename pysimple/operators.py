@@ -16,11 +16,11 @@ class BinaryOperator(object):
     def is_reducible(self):
         return True
 
-    def reduce(self):
+    def reduce(self, environment):
         if self.left.is_reducible:
-            return self.__class__(self.left.reduce(), self.right)
+            return self.__class__(self.left.reduce(environment), self.right)
         elif self.right.is_reducible:
-            return self.__class__(self.left, self.right.reduce())
+            return self.__class__(self.left, self.right.reduce(environment))
         return self._reduce()
 
 
@@ -108,7 +108,7 @@ class Not(object):
 
     def reduce(self):
         if self.value.is_reducible:
-            return Not(self.value.reduce())
+            return Not(self.value.reduce(environment))
 
         return Boolean(not self.value.value)
 
